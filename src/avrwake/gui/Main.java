@@ -185,7 +185,7 @@ public class Main extends javax.swing.JFrame {
                 powerButton.setSelected(avrControl.isPowered());
                 muteButton.setSelected(avrControl.isMuted());
                 int curVolume = avrControl.getCurrentVolume();
-                if (curVolume != -1) {
+                 if (curVolume != -1) {
                     volumeSlider.setValue(curVolume);
                 }
                 sourceString = avrControl.getSource();
@@ -273,12 +273,17 @@ public class Main extends javax.swing.JFrame {
         controlStatusIcon = new javax.swing.JLabel();
         masterVolumeLabel = new javax.swing.JLabel();
         sourceSelectLabel = new javax.swing.JLabel();
-        sourceBD = new javax.swing.JButton();
+        sourcePC = new javax.swing.JButton();
         sourceTV = new javax.swing.JButton();
         surroundModeLabel = new javax.swing.JLabel();
         mchStereo = new javax.swing.JButton();
         mchIn = new javax.swing.JButton();
         curSourceMode = new javax.swing.JLabel();
+        audioDelayLabel = new javax.swing.JLabel();
+        audioDelay0 = new javax.swing.JButton();
+        audioDelay80 = new javax.swing.JButton();
+        customAudioDelay = new javax.swing.JTextField();
+        customAudioDelayLabel = new javax.swing.JLabel();
         alarmTab = new javax.swing.JPanel();
         alarmStatusBar = new javax.swing.JPanel();
         alarmStatusText = new javax.swing.JLabel();
@@ -338,7 +343,7 @@ public class Main extends javax.swing.JFrame {
         volumeSlider.setForeground(new java.awt.Color(255, 200, 50));
         volumeSlider.setMajorTickSpacing(5);
         volumeSlider.setMaximum(20);
-        volumeSlider.setMinimum(-80);
+        volumeSlider.setMinimum(-68);
         volumeSlider.setMinorTickSpacing(1);
         volumeSlider.setPaintLabels(true);
         volumeSlider.setPaintTicks(true);
@@ -433,12 +438,12 @@ public class Main extends javax.swing.JFrame {
         sourceSelectLabel.setForeground(new java.awt.Color(255, 200, 50));
         sourceSelectLabel.setText(bundle.getString("Main.sourceSelectLabel.text")); // NOI18N
 
-        sourceBD.setBackground(new java.awt.Color(60, 60, 60));
-        sourceBD.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        sourceBD.setText(bundle.getString("Main.sourceBD.text")); // NOI18N
-        sourceBD.addActionListener(new java.awt.event.ActionListener() {
+        sourcePC.setBackground(new java.awt.Color(60, 60, 60));
+        sourcePC.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        sourcePC.setText(bundle.getString("Main.sourcePC.text")); // NOI18N
+        sourcePC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sourceBDActionPerformed(evt);
+                sourcePCActionPerformed(evt);
             }
         });
 
@@ -480,6 +485,42 @@ public class Main extends javax.swing.JFrame {
         curSourceMode.setToolTipText(bundle.getString("Main.curSourceMode.toolTipText")); // NOI18N
         curSourceMode.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("Main.curSourceMode.border.title"), javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(255, 200, 50))); // NOI18N
 
+        audioDelayLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        audioDelayLabel.setForeground(new java.awt.Color(255, 200, 50));
+        audioDelayLabel.setText(bundle.getString("Main.audioDelayLabel.text")); // NOI18N
+
+        audioDelay0.setBackground(new java.awt.Color(60, 60, 60));
+        audioDelay0.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        audioDelay0.setText(bundle.getString("Main.audioDelay0.text")); // NOI18N
+        audioDelay0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioDelay0ActionPerformed(evt);
+            }
+        });
+
+        audioDelay80.setBackground(new java.awt.Color(60, 60, 60));
+        audioDelay80.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        audioDelay80.setText(bundle.getString("Main.audioDelay80.text")); // NOI18N
+        audioDelay80.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioDelay80ActionPerformed(evt);
+            }
+        });
+
+        customAudioDelay.setBackground(new java.awt.Color(70, 70, 70));
+        customAudioDelay.setForeground(new java.awt.Color(255, 200, 50));
+        customAudioDelay.setText(bundle.getString("Main.customAudioDelay.text")); // NOI18N
+        customAudioDelay.setCaretColor(new java.awt.Color(255, 255, 255));
+        customAudioDelay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customAudioDelayActionPerformed(evt);
+            }
+        });
+
+        customAudioDelayLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        customAudioDelayLabel.setForeground(new java.awt.Color(255, 200, 50));
+        customAudioDelayLabel.setText(bundle.getString("Main.customAudioDelayLabel.text")); // NOI18N
+
         javax.swing.GroupLayout avrControlTabLayout = new javax.swing.GroupLayout(avrControlTab);
         avrControlTab.setLayout(avrControlTabLayout);
         avrControlTabLayout.setHorizontalGroup(
@@ -504,14 +545,23 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(avrControlTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sourceSelectLabel)
                             .addGroup(avrControlTabLayout.createSequentialGroup()
-                                .addComponent(sourceBD)
+                                .addComponent(sourcePC)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(sourceTV))
                             .addComponent(surroundModeLabel)
                             .addGroup(avrControlTabLayout.createSequentialGroup()
                                 .addComponent(mchStereo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(mchIn)))
+                                .addComponent(mchIn))
+                            .addComponent(audioDelayLabel)
+                            .addGroup(avrControlTabLayout.createSequentialGroup()
+                                .addComponent(audioDelay0)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(audioDelay80)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(customAudioDelayLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(customAudioDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -535,7 +585,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(sourceSelectLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(avrControlTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sourceBD)
+                    .addComponent(sourcePC)
                     .addComponent(sourceTV))
                 .addGap(18, 18, 18)
                 .addComponent(surroundModeLabel)
@@ -543,7 +593,15 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(avrControlTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mchStereo)
                     .addComponent(mchIn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(audioDelayLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(avrControlTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(audioDelay0)
+                    .addComponent(audioDelay80)
+                    .addComponent(customAudioDelay, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customAudioDelayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
                 .addComponent(curSourceMode)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(controlStatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -773,6 +831,11 @@ public class Main extends javax.swing.JFrame {
                 sleepHourSpinnerMouseWheelMoved(evt);
             }
         });
+        sleepHourSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sleepHourSpinnerStateChanged(evt);
+            }
+        });
 
         sleepMinuteSpinner.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         sleepMinuteSpinner.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
@@ -934,6 +997,11 @@ public class Main extends javax.swing.JFrame {
         avrStringField.setForeground(new java.awt.Color(255, 200, 50));
         avrStringField.setText(bundle.getString("Main.avrStringField.text")); // NOI18N
         avrStringField.setCaretColor(new java.awt.Color(255, 255, 255));
+        avrStringField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                avrStringFieldActionPerformed(evt);
+            }
+        });
 
         avrTestButton.setBackground(new java.awt.Color(60, 60, 60));
         avrTestButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/avrwake/gui/resources/repeat.png"))); // NOI18N
@@ -1061,12 +1129,17 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_volumeSliderMouseWheelMoved
 
     private void avrTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avrTestButtonActionPerformed
-        String command = avrStringField.getText();
-        String response = avrControl.sendCommand(command);
-        if (response != null) {
-            testTextArea.insert(String.format("%s : %s\n", Common.getSimpleTime(new Date()), response), 0);
-        }
-        setControlStatusText("Command '" + command + "' sent...");
+        new Thread() {
+            @Override
+            public void run() {
+                String command = avrStringField.getText();
+                String response = avrControl.sendCommand(command);
+                if (response != null) {
+                    testTextArea.insert(String.format("%s : %s\n", Common.getSimpleTime(new Date()), response), 0);
+                }
+                setControlStatusText("Command '" + command + "' sent...");
+            }
+        }.start();
     }//GEN-LAST:event_avrTestButtonActionPerformed
 
     private void muteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muteButtonActionPerformed
@@ -1238,9 +1311,6 @@ public class Main extends javax.swing.JFrame {
         } else {
             sleepHourSpinner.getModel().setValue(addSubDate(curHour, Calendar.HOUR_OF_DAY, -1));
         }
-        curHour = (Date) sleepHourSpinner.getModel().getValue();
-        prefsData.setSleepHour(getDateField(curHour, Calendar.HOUR_OF_DAY));
-        saveSettings();
     }//GEN-LAST:event_sleepHourSpinnerMouseWheelMoved
 
     private void sleepMinuteSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_sleepMinuteSpinnerMouseWheelMoved
@@ -1255,12 +1325,12 @@ public class Main extends javax.swing.JFrame {
         saveSettings();
     }//GEN-LAST:event_sleepMinuteSpinnerMouseWheelMoved
 
-    private void sourceBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceBDActionPerformed
-        avrControl.setSource("SIBD");
-        sourceString = "SIBD";
+    private void sourcePCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourcePCActionPerformed
+        avrControl.setSource("SIDVD");
+        sourceString = "SIDVD";
         curSourceMode.setText(sourceString + " : " + modeString);
-        setControlStatusText("Source set to BD...");
-    }//GEN-LAST:event_sourceBDActionPerformed
+        setControlStatusText("Source set to PC...");
+    }//GEN-LAST:event_sourcePCActionPerformed
 
     private void sourceTVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sourceTVActionPerformed
         avrControl.setSource("SITV");
@@ -1282,6 +1352,32 @@ public class Main extends javax.swing.JFrame {
         curSourceMode.setText(sourceString + " : " + modeString);
         setControlStatusText("Source set to Dolby Digital...");
     }//GEN-LAST:event_mchInActionPerformed
+
+    private void sleepHourSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sleepHourSpinnerStateChanged
+        Date curHour = (Date) sleepHourSpinner.getModel().getValue();
+        prefsData.setSleepHour(getDateField(curHour, Calendar.HOUR_OF_DAY));
+        saveSettings();
+    }//GEN-LAST:event_sleepHourSpinnerStateChanged
+
+    private void avrStringFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avrStringFieldActionPerformed
+        avrTestButtonActionPerformed(null);
+    }//GEN-LAST:event_avrStringFieldActionPerformed
+
+    private void audioDelay0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioDelay0ActionPerformed
+        avrControl.sendCommand("PSDELAY 000");
+        setControlStatusText("Audio delay set to 0ms");
+    }//GEN-LAST:event_audioDelay0ActionPerformed
+
+    private void audioDelay80ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioDelay80ActionPerformed
+        avrControl.sendCommand("PSDELAY 050");
+        setControlStatusText("Audio delay set to 50ms");
+    }//GEN-LAST:event_audioDelay80ActionPerformed
+
+    private void customAudioDelayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customAudioDelayActionPerformed
+        int delay = Integer.parseInt(customAudioDelay.getText());
+        avrControl.sendCommand(String.format("PSDELAY %03d", delay));
+        setControlStatusText("Audio delay set to " + delay + "ms");
+    }//GEN-LAST:event_customAudioDelayActionPerformed
     
     public void setControlStatusText(String text) {
         controlStatusText.setText(String.format("%s : %s", Common.getSimpleTime(new Date()), text));
@@ -1315,6 +1411,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel alarmTimeLeft;
     private javax.swing.JLabel alarmVolumeLabel;
     private javax.swing.JSlider alarmVolumeSlider;
+    private javax.swing.JButton audioDelay0;
+    private javax.swing.JButton audioDelay80;
+    private javax.swing.JLabel audioDelayLabel;
     private javax.swing.JLabel avrConnectionLabel;
     private javax.swing.JPanel avrControlTab;
     private javax.swing.JTextField avrHostnameField;
@@ -1326,6 +1425,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel controlStatusIcon;
     private javax.swing.JLabel controlStatusText;
     private javax.swing.JLabel curSourceMode;
+    private javax.swing.JTextField customAudioDelay;
+    private javax.swing.JLabel customAudioDelayLabel;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JPanel mailBar;
     private avrwake.gui.element.HyperlinkLabel mailLabel;
@@ -1342,8 +1443,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel sleepLabel;
     private javax.swing.JSpinner sleepMinuteSpinner;
     private javax.swing.JCheckBox sleepTimeEnable;
-    private javax.swing.JButton sourceBD;
     private javax.swing.ButtonGroup sourceGroup;
+    private javax.swing.JButton sourcePC;
     private javax.swing.JLabel sourceSelectLabel;
     private javax.swing.JButton sourceTV;
     private javax.swing.JButton stopAlarmButton;

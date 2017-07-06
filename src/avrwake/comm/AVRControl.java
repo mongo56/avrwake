@@ -11,7 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.net.telnet.EchoOptionHandler;
+import org.apache.commons.net.telnet.InvalidTelnetOptionException;
+import org.apache.commons.net.telnet.SuppressGAOptionHandler;
 import org.apache.commons.net.telnet.TelnetClient;
+import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
 
 /**
  *
@@ -21,23 +25,35 @@ public class AVRControl {
 
     private final int AVR_TELNET_PORT = 23;
     private final char AVR_LAST_CHAR = 0x0d;
-    private final int AVR_TIMEOUT = 1000;
+    public static final int AVR_TIMEOUT = 1000;
     private final int AVR_COMMAND_PAUSE = 10;
     private PreferencesStructure prefs;
     private TelnetClient telnet;
     private boolean powered = false;
 
     public AVRControl(PreferencesStructure prefs) {
-        this.prefs = prefs;
-        telnet = new TelnetClient();
-        telnet.setConnectTimeout(AVR_TIMEOUT);
-        telnet.setReaderThread(true);
+        try {
+            this.prefs = prefs;
+            telnet = new TelnetClient();
+//        telnet.setSocketFactory(new TimeoutSocketFactory());
+            telnet.setDefaultTimeout(AVR_TIMEOUT);
+            telnet.setConnectTimeout(AVR_TIMEOUT);
+            telnet.addOptionHandler(new TerminalTypeOptionHandler("VT100", false, false, true, false));
+            telnet.addOptionHandler(new SuppressGAOptionHandler(true, true, true, true));
+            telnet.addOptionHandler(new EchoOptionHandler(false, false, false, false));
+            telnet.setReaderThread(true);
+        } catch (InvalidTelnetOptionException ex) {
+            Logger.getLogger(AVRControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AVRControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void connect() {
         try {
             if (!telnet.isConnected()) {
                 telnet.connect(prefs.getAvrHostname(), AVR_TELNET_PORT);
+
             }
         } catch (SocketException ex) {
             Logger.getLogger(AVRControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +104,9 @@ public class AVRControl {
 
     public String setVolume(int volume) {
         if (powered) {
-            return sendCommand(String.format("MV%d", dbToDec(volume)));
+            if (volume > -70) {
+                return sendCommand(String.format("MV%d", dbToDec(volume)));
+            }
         }
         return null;
     }
@@ -165,11 +183,10 @@ public class AVRControl {
 
     public String sendCommand(String value) {
         try {
-            disconnect();
             connect();
             if (telnet.isConnected()) {
-                telnet.setSoTimeout(100);
-                telnet.setSoLinger(true, 0);
+                telnet.setSoTimeout(AVR_TIMEOUT);
+                telnet.setSoLinger(true, AVR_TIMEOUT);
                 InputStream in = telnet.getInputStream();
                 PrintStream out = new PrintStream(telnet.getOutputStream());
                 out.print(value + "\r\n");
@@ -184,8 +201,6 @@ public class AVRControl {
 
                 }
                 System.out.println(Common.getSimpleTime(new Date()) + " - received:" + response);
-                in.close();
-                out.close();
                 disconnect();
                 return response;
             }
